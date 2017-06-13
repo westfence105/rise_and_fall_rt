@@ -9,7 +9,7 @@ but you can not distribute any its modified software as same name as this.
 I shall not responsible for any loss, damages and troubles due to using this software.
 
 このソフトウェアは無料で利用することができます。（寄付や開発者へ食事をおごる事は自由です。）
-このソフトウェアのソースコードと実行ファイルは改変を加えない状態で再配布できます。
+このソフトウェアのソースコードと実行ファイルは改変を加えない状態で非商用に限り再配布できます。
 このソフトウェアのソースコードの一部を著作権表示とともに使用することは商用も含み（反社会的な行為に使う場合を除き）自由ですが、
 改変を加えたものをこれと同じ名前で配布することはできません。
 このソフトウェアの利用により生じた損失、損害、その他トラブルに関する一切の責任は負いかねます。
