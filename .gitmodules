@@ -1,3 +1,0 @@
-[submodule "lib/libsoundbag"]
-	path = lib/libsoundbag
-	url = git@github.com:westfence105/libsoundbag.git
