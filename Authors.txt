@@ -1,0 +1,30 @@
+List of depending libraries of this software.
+
+----
+
+libsoundbag
+Copyright (c) 2017 Togo Nishigaki <westfence95@gmail.com>
+
+MIT License
+https://github.com/westfence105/libsoundbag/blob/master/LICENSE.txt
+
+----
+
+Simple DirectMedia Layer
+Copyright (C) 1997-2016 Sam Lantinga <slouken@libsdl.org>
+
+----
+
+SDL_ttf
+Copyright (C) 2001-2016 Sam Lantinga <slouken@libsdl.org>
+
+----
+
+The OpenGL Extension Wrangler Library
+Copyright (C) 2008-2015, Nigel Stewart <nigels[]users sourceforge net>
+Copyright (C) 2002-2008, Milan Ikits <milan ikits[]ieee org>
+Copyright (C) 2002-2008, Marcelo E. Magallon <mmagallo[]debian org>
+Copyright (C) 2002, Lev Povalahev
+All rights reserved.
+
+----
