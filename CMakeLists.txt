@@ -23,7 +23,7 @@ ExternalProject_Add(
 		GIT_REPOSITORY https://github.com/westfence105/libsoundbag.git
 		SOURCE_DIR ${DEPEND_LIB_ROOT}/libsoundbag/src
 		BINARY_DIR ${DEPEND_LIB_ROOT}/libsoundbag/build
-		CMAKE_ARGS -DBUILD_TESTS=OFF -DENABLE_SHARED=OFF 
+		CMAKE_ARGS -DBUILD_TESTS=OFF -DENABLE_SHARED=OFF
 				   -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
 	)
 include_directories(${DEPEND_LIB_ROOT}/include)
@@ -31,11 +31,11 @@ link_directories(${DEPEND_LIB_ROOT}/lib)
 
 include_directories(src)
 
-add_executable(rise_and_fall src/rise_and_fall.cpp)
+add_executable(rise_and_fall
+		src/rise_and_fall.cpp
+		src/MainWindow.cpp
+	)
 
-add_library(view STATIC src/view/MainWindow.cpp)
-target_link_libraries(view PUBLIC SDL_GL_Window ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
-
-target_link_libraries(rise_and_fall view)
+target_link_libraries(rise_and_fall PUBLIC SDL_GL_Window ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
 
 install(TARGETS rise_and_fall RUNTIME DESTINATION rise_and_fall)

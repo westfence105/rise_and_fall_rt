@@ -2,7 +2,7 @@
 
 #include "SDL.h"
 
-#include "view/MainWindow.hpp"
+#include "MainWindow.hpp"
 
 using namespace rise_and_fall;
 
