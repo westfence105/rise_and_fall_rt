@@ -25,6 +25,7 @@ class MainWindow {
 
 abstract Scene {
   +prepare() <virtual>
+  ~genBuffers() <virtual>
   +draw() const <virtual>
   +update() <virtual> : ( uint32_t delta )
   +handleEvent <virtual> : bool(SDL_Event)

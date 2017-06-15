@@ -8,7 +8,7 @@
 using namespace rise_and_fall;
 
 Scene::Scene(){
-
+  prepared = false;
 }
 
 Scene::~Scene(){
@@ -23,4 +23,9 @@ std::shared_ptr<Scene> Scene::getNext(){
   else {
     return NULL;
   }
+}
+
+void Scene::prepare(){
+  genBuffers();
+  prepared = true;
 }

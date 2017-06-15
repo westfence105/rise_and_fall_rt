@@ -25,15 +25,23 @@ namespace rise_and_fall {
       ).detach();
     }
 
+    bool prepared;
+
+    virtual void genBuffers() = 0;
+
   public:
     Scene();
     virtual ~Scene();
 
-    virtual void prepare() = 0;
+    virtual void prepare();
     virtual void draw() const = 0;
     virtual void update( uint32_t delta ) = 0;
     virtual bool handleEvent( const SDL_Event& event ) = 0;
     std::shared_ptr<Scene> getNext();
+
+    operator bool() const {
+      return prepared;
+    }
 
   };
 }
