@@ -46,11 +46,10 @@ RF_Config::RF_Config() : SDL_GL_Window::Config( 800, 600 ){
   #endif
   path = boost::filesystem::path(buf.data()).remove_filename();
 
-#if DEBUG
-  std::ofstream ofs("stdout.txt");
-  ofs << "buf:  " << buf.data() << std::endl;
-  ofs << "path: " << path << std::endl;
-  ofs << "conf: " << path.append("rise_and_fall.conf") << std::endl;
+#ifndef NDEBUG
+  std::cout << "buf:  " << buf.data() << std::endl;
+  std::cout << "path: " << path << std::endl;
+  std::cout << "conf: " << path.append("rise_and_fall.conf") << std::endl;
 #endif
 }
 
