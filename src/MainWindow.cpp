@@ -5,11 +5,12 @@
 #include "soundbag/threads.hpp"
 
 #include "MainWindow.hpp"
+#include "RF_Config.hpp"
 
 using namespace soundbag;
 using namespace rise_and_fall;
 
-RF_MainWindow::RF_MainWindow() : SDL_GL_Window( "The Rise and Fall", SDL_GL_Window::Config( 800, 600 ) )
+RF_MainWindow::RF_MainWindow() : SDL_GL_Window( "The Rise and Fall", RF_Config::getInstance() )
 {
 
 }

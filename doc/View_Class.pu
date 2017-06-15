@@ -14,7 +14,7 @@ class SDL_GL_Window {
   ~update() <virtual> : ( uint32_t delta )
 }
 
-SDL_GL_Window -down-> MainWindow
+SDL_GL_Window -down-|> MainWindow
 
 class MainWindow {
   ~draw() <override virtual>
@@ -33,3 +33,27 @@ abstract Scene {
   ~loadNext<T>() : (args...)
   +getNext() : Scene* (NULL if next is not loaded)
 }
+
+MainWindow <..> Scene
+
+class SDL_GL_Window::Config {
+  +width  : int
+  +height : int
+  +x : int
+  +y : int
+  +window_mode : enum
+  +frame_rate  : int
+  +background  : Color
+}
+
+SDL_GL_Window <.right.> "SDL_GL_Window::Config"
+
+class RF_Config <<Singleton>> {
+  +path : boost::filesystem::path
+  +debug : string <scene name:only in debug build>
+  +font : string
+  +init() : (argc,argv)
+}
+
+"SDL_GL_Window::Config" -down-|> RF_Config
+RF_Config .left.> MainWindow
