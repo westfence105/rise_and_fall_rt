@@ -1,0 +1,34 @@
+class SDL_GL_Window {
+  +main()
+  +width : int
+  +height : int
+  +resize() : ( int w, int h )
+  +setBackground() : (Color)
+  +setFrameRate() : (int)
+  +quit()
+  ~onResize() : ( int w, int h )
+  ~handleEvent() <virtual> : bool(SDL_Event)
+  ~setProjection() <virtual>
+  ~prepare() <virtual>
+  ~draw() <virtual>
+  ~update() <virtual> : ( uint32_t delta )
+}
+
+SDL_GL_Window -down-> MainWindow
+
+class MainWindow {
+  ~draw() <override virtual>
+  ~update() <override virtual> : ( uint32_t delta )
+  ~handleEvent() <override virtual> : bool(SDL_Event)
+  -scene : Scene*
+}
+
+class Scene {
+  +prepare() <virtual>
+  +draw() <virtual>
+  +update() <virtual> : ( uint32_t delta )
+  +handleEvent <virtual> : bool(SDL_Event)
+  next_scene : Scene*
+  ~loadNext<T>() <virtual> : (args...)
+  +nextLoaded() : bool
+}

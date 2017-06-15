@@ -1,0 +1,26 @@
+activate Application
+activate MainWindow
+activate Scene
+activate Draw
+Application -> MainWindow : Create Window
+MainWindow -> Draw : Initialize Screen
+Application ->> Scene : Create Scene
+loop
+alt Scene Loaded
+  Scene --> MainWindow : Set Scene
+end
+alt exit
+  MainWindow -> Application : Exit
+else
+  MainWindow -> Scene : Event
+end
+MainWindow -> Scene : Update
+alt Scene Changed
+  Scene ->> Scene : Load Scene
+end
+group Draw Call
+MainWindow -> Scene
+Scene --> MainWindow
+MainWindow -> Draw
+end
+end
