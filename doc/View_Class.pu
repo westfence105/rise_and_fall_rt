@@ -23,12 +23,12 @@ class MainWindow {
   -scene : Scene*
 }
 
-class Scene {
+abstract Scene {
   +prepare() <virtual>
-  +draw() <virtual>
+  +draw() const <virtual>
   +update() <virtual> : ( uint32_t delta )
   +handleEvent <virtual> : bool(SDL_Event)
   next_scene : Scene*
-  ~loadNext<T>() <virtual> : (args...)
-  +nextLoaded() : bool
+  ~loadNext<T>() : (args...)
+  +getNext() : Scene* (NULL if next is not loaded)
 }

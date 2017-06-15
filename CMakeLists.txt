@@ -34,6 +34,7 @@ include_directories(src)
 add_executable(rise_and_fall
 		src/rise_and_fall.cpp
 		src/MainWindow.cpp
+		src/Scene.cpp
 	)
 
 target_link_libraries(rise_and_fall PUBLIC SDL_GL_Window ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES})
