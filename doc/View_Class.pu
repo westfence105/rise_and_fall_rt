@@ -50,8 +50,8 @@ SDL_GL_Window <.right.> "SDL_GL_Window::Config"
 
 class RF_Config <<Singleton>> {
   +path : boost::filesystem::path
+  +font : boost::filesystem::path
   +debug : string <scene name:only in debug build>
-  +font : string
   +init() : (argc,argv)
 }
 

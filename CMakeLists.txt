@@ -45,3 +45,4 @@ target_link_libraries( rise_and_fall PUBLIC
 	)
 
 install(TARGETS rise_and_fall RUNTIME DESTINATION rise_and_fall)
+install(FILES res//NotoSans-Regular.ttf DESTINATION rise_and_fall)

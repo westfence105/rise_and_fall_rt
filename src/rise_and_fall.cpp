@@ -10,15 +10,19 @@
 using namespace rise_and_fall;
 
 int main( int argc, char** argv ){
-	#if (!defined(NDEBUG)) && defined(_WIN32)
+	#ifdef _WIN32
 	#define STDOUT_REDIRECT
 		auto ob_orig = std::cout.rdbuf();
 		auto eb_orig = std::cerr.rdbuf();
+	#ifndef NDEBUG
 		std::ofstream ofs_out("stdout.txt");
 		std::ofstream ofs_err("stderr.txt");
+	#else
+		std::ofstream ofs_out("rise_and_fall_out.log.txt");
+		std::ofstream ofs_err("rise_and_fall_err.log.txt");
+	#endif
 		std::cout.rdbuf( ofs_out.rdbuf() );
 		std::cerr.rdbuf( ofs_err.rdbuf() );
-		std::cout << "debug" << std::endl;
 	#endif
 
 	if( SDL_Init(SDL_INIT_EVERYTHING) != 0 ){

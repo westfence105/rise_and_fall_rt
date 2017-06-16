@@ -1,5 +1,5 @@
 #include <fstream>
-#include <map>
+#include <unordered_map>
 
 extern "C" {
   #include <stdlib.h>
@@ -20,6 +20,8 @@ extern "C" {
 #include "boost/filesystem.hpp"
 
 #include "RF_Config.hpp"
+
+namespace bfs = boost::filesystem;
 
 using namespace soundbag;
 using namespace rise_and_fall;
@@ -44,12 +46,15 @@ RF_Config::RF_Config() : SDL_GL_Window::Config( 800, 600 ){
     };
     sysctl( mib, 4, buf, &bufsize, NULL, 0 );
   #endif
-  path = boost::filesystem::path(buf.data()).remove_filename();
+  path = bfs::path(buf.data()).remove_filename();
+
+  font = path / "NotoSans-Regular.ttf";
 
 #ifndef NDEBUG
   std::cout << "buf:  " << buf.data() << std::endl;
   std::cout << "path: " << path << std::endl;
-  std::cout << "conf: " << path.append("rise_and_fall.conf") << std::endl;
+  std::cout << "conf: " << path / "rise_and_fall.conf" << std::endl;
+  std::cout << "font: " << font << std::endl;
 #endif
 }
 
@@ -63,9 +68,91 @@ RF_Config& RF_Config::getInstance(){
 }
 
 void RF_Config::init( int argc, char** argv ) {
-  std::vector<std::string> args;
-  args.reserve(argc);
-  for( int i = 0; i < argc; ++i ){
-    args.push_back( std::string(argv[i]) );
+  std::unordered_map<std::string,std::string> conf;
+  try {
+    bfs::ifstream conf_ifs( path / "rise_and_fall.conf" );
+    if( conf_ifs.fail() ){
+      #ifndef NDEBUG
+        std::cout << path / "rise_and_fall.conf" << std::endl;
+      #endif
+      throw 1;
+    }
+    std::string line;
+    while( std::getline( conf_ifs, line ) ){
+      const auto dlm_pos = line.find_first_of('=');
+      if( dlm_pos != std::string::npos && 0 < dlm_pos && dlm_pos + 1 < line.length() ){
+        std::string key = line.substr( 0, dlm_pos );
+        std::string value = line.substr( dlm_pos + 1, std::string::npos );
+        conf[key] = value;
+      #ifndef NDEBUG
+        std::cout << key << ":\t" << value << std::endl;
+      #endif
+      }
+      else {
+        #ifndef NDEBUG
+          std::cerr << "Illegal line: " << line << std::endl;
+        #endif
+      }
+    }
+  }
+  catch(...){
+
+  }
+
+  for( int i = 1; i < argc; ++i ){
+    std::string arg( argv[i] );
+    if( ( arg == "--window-mode" || arg == "-w" ) && ++i < argc ){
+      conf["window_mode"] = argv[i];
+    }
+    else if( ( arg == "--window-size" || arg == "-s" ) && ++i < argc  ){
+      conf["window_size"] = argv[i];
+    }
+    else if( ( arg == "--window-pos" || arg == "-p" ) && ++i < argc ){
+      conf["window_pos"] = argv[i];
+    }
+  #ifndef NDEBUG
+    else if( arg == "--debug" && ++i < argc ){
+      debug = argv[i];
+    }
+  #endif
+    else {
+      std::cerr << "Warning: Ignoring invalid argument \"" << arg << "\"." << std::endl;
+    }
+  }
+
+  auto find = [&]( const std::string& key, const std::string& _default ){
+    auto iter = conf.find(key);
+    if( iter != conf.end() ){
+      return iter->second;
+    }
+    else {
+      return _default;
+    }
+  };
+
+  std::string wm_str = find("window_mode","normal");
+  std::cout << wm_str << std::endl;
+  if( wm_str == "full" || wm_str == "fullscreen" ){
+    window_mode = WINDOW_MODE_FULLSCREEN;
+  }
+  else if( wm_str == "max" || wm_str == "maximized" ){
+    window_mode = WINDOW_MODE_MAXIMIZED;
+  }
+  else {
+    window_mode = WINDOW_MODE_NORMAL;
+  }
+
+  std::string ws_str = find("window_size","");
+  const auto ws_x_pos = ws_str.find_first_of('x');
+  if( ws_x_pos != std::string::npos ){
+    try {
+      const auto width_str  = ws_str.substr( 0, ws_x_pos );
+      std::cout << width_str << std::endl;
+      width = std::stoi( width_str );
+    } catch(...){}
+    try {
+      const auto height_str = ws_str.substr( ws_x_pos + 1, std::string::npos );
+      height = std::stoi( height_str );
+    } catch(...){}
   }
 }

@@ -10,7 +10,7 @@
 namespace rise_and_fall {
   struct RF_Config : soundbag::SDL_GL_Window::Config {
     boost::filesystem::path path;
-    std::string font;
+    boost::filesystem::path font;
     std::string debug;
 
     static RF_Config& getInstance();
