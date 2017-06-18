@@ -11,6 +11,7 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(Boost COMPONENTS system filesystem REQUIRED)
+find_package(ZLIB REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
@@ -26,8 +27,8 @@ ExternalProject_Add(
 		CMAKE_ARGS -DBUILD_TESTS=OFF -DENABLE_SHARED=OFF
 				   -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}
 	)
-include_directories(${DEPEND_LIB_ROOT}/include)
-link_directories(${DEPEND_LIB_ROOT}/lib)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 include_directories(src)
 
@@ -36,12 +37,15 @@ add_executable(rise_and_fall
 		src/MainWindow.cpp
 		src/Scene.cpp
 		src/RF_Config.cpp
+		src/battle/RF_Map.cpp
 	)
+add_dependencies(rise_and_fall libsoundbag)
 
 target_link_libraries( rise_and_fall PUBLIC
 		SDL_GL_Window ${SDL2_LIBRARIES} ${OPENGL_LIBRARIES}
 		SDL_ttf
 		${Boost_FILESYSTEM_LIBRARIES} ${Boost_SYSTEM_LIBRARIES}
+		soundbag_zlib ${ZLIB_LIBRARIES}
 	)
 
 install(TARGETS rise_and_fall RUNTIME DESTINATION rise_and_fall)
