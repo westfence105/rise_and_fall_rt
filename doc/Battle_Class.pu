@@ -1,0 +1,15 @@
+Class BattleScene {
+  ~map   : Map
+  ~units : List<Unit>
+}
+
+BattleScene .> Map
+
+Class Map {
+  -data : List<byte>
+  -tex  : GLuint = Texture ID
+  -vbo  : GLuint = VBO
+  +operator() : byte(x,y)
+  +genBuffers()
+  +draw()
+}
