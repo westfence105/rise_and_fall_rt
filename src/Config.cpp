@@ -19,14 +19,14 @@ extern "C" {
 
 #include "boost/filesystem.hpp"
 
-#include "RF_Config.hpp"
+#include "Config.hpp"
 
 namespace bfs = boost::filesystem;
 
 using namespace soundbag;
 using namespace rise_and_fall;
 
-RF_Config::RF_Config() : SDL_GL_Window::Config( 800, 600 ){
+Config::Config() : SDL_GL_Window::Config( 800, 600 ){
   uint32_t bufsize = MAX_PATH + 1;
   std::vector<char> buf(bufsize);
   #if defined(_WIN32) || defined(_WIN64)
@@ -58,16 +58,16 @@ RF_Config::RF_Config() : SDL_GL_Window::Config( 800, 600 ){
 #endif
 }
 
-RF_Config::~RF_Config(){
+Config::~Config(){
 
 }
 
-RF_Config& RF_Config::getInstance(){
-  static RF_Config instance;
+Config& Config::getInstance(){
+  static Config instance;
   return instance;
 }
 
-void RF_Config::init( int argc, char** argv ) {
+void Config::init( int argc, char** argv ) {
   std::unordered_map<std::string,std::string> conf;
   try {
     bfs::ifstream conf_ifs( path / "rise_and_fall.conf" );

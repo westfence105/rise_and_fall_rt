@@ -36,8 +36,8 @@ add_executable(rise_and_fall
 		src/rise_and_fall.cpp
 		src/MainWindow.cpp
 		src/Scene.cpp
-		src/RF_Config.cpp
-		src/battle/RF_Map.cpp
+		src/Config.cpp
+		src/battle/Map.cpp
 	)
 add_dependencies(rise_and_fall libsoundbag)
 

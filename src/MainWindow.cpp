@@ -5,21 +5,21 @@
 #include "soundbag/threads.hpp"
 
 #include "MainWindow.hpp"
-#include "RF_Config.hpp"
+#include "Config.hpp"
 
 using namespace soundbag;
 using namespace rise_and_fall;
 
-RF_MainWindow::RF_MainWindow() : SDL_GL_Window( "The Rise and Fall", RF_Config::getInstance() )
+MainWindow::MainWindow() : SDL_GL_Window( "The Rise and Fall", rise_and_fall::Config::getInstance() )
 {
 
 }
 
-RF_MainWindow::~RF_MainWindow(){
+MainWindow::~MainWindow(){
 
 }
 
-void RF_MainWindow::draw(){
+void MainWindow::draw(){
 	soundbag::try_lock<std::recursive_mutex> locker(m_mutex);
 	if( locker && m_scene ){
 		if( !(*m_scene) ){
@@ -32,7 +32,7 @@ void RF_MainWindow::draw(){
 	}
 }
 
-void RF_MainWindow::update( uint32_t delta ){
+void MainWindow::update( uint32_t delta ){
 	soundbag::try_lock<std::recursive_mutex> locker(m_mutex);
 	if( locker && m_scene ){
 		m_scene->update(delta);
@@ -43,12 +43,12 @@ void RF_MainWindow::update( uint32_t delta ){
 	}
 }
 
-bool RF_MainWindow::handleEvent( SDL_Event& event ){
+bool MainWindow::handleEvent( SDL_Event& event ){
 	soundbag::try_lock<std::recursive_mutex> locker(m_mutex);
 	return ( locker && m_scene && m_scene->handleEvent(event) );
 }
 
-void RF_MainWindow::setScene( std::shared_ptr<Scene> scene ){
+void MainWindow::setScene( std::shared_ptr<Scene> scene ){
 	std::unique_lock<std::recursive_mutex> locker(m_mutex);
 	m_scene = scene;
 }

@@ -6,27 +6,27 @@
 #include "soundbag/bits.hpp"
 #include "soundbag/zlib_tool.hpp"
 
-#include "RF_Map.hpp"
+#include "Map.hpp"
 
 using namespace soundbag;
 using namespace rise_and_fall;
 
 namespace sbz = soundbag::zlib_tool;
 
-constexpr byte RF_Map::TERRAIN_SEA;
-constexpr byte RF_Map::TERRAIN_FLAT;	
-constexpr byte RF_Map::TERRAIN_HILL;
-constexpr byte RF_Map::TERRAIN_MOUNTAIN;
-constexpr byte RF_Map::TERRAIN_ALPINE;
+constexpr byte Map::TERRAIN_SEA;
+constexpr byte Map::TERRAIN_FLAT;	
+constexpr byte Map::TERRAIN_HILL;
+constexpr byte Map::TERRAIN_MOUNTAIN;
+constexpr byte Map::TERRAIN_ALPINE;
 
-RF_Map::RF_Map(){
+Map::Map(){
 	m_width = 0;
 	m_height = 0;
 	tex = 0;
 	vbo = 0;
 }
 
-RF_Map::RF_Map( const RF_Map& b ){
+Map::Map( const Map& b ){
 	m_width = b.m_width;
 	m_height = b.m_height;
 	m_data.reserve( b.m_data.size() );
@@ -37,7 +37,7 @@ RF_Map::RF_Map( const RF_Map& b ){
 	vbo = 0;
 }
 
-RF_Map::RF_Map( const std::string& filename )
+Map::Map( const std::string& filename )
 		throw( std::invalid_argument )
 {
 	std::basic_ifstream<uint8_t> ifs( filename, std::ios::binary );
@@ -48,11 +48,11 @@ RF_Map::RF_Map( const std::string& filename )
 	load( std::vector<byte>( std::istreambuf_iterator<byte>(ifs), std::istreambuf_iterator<byte>() ) );
 }
 
-RF_Map::RF_Map( const std::vector<byte>& data ){
+Map::Map( const std::vector<byte>& data ){
 	load( data );
 }
 
-void RF_Map::load( const std::vector<byte>& data_in ){
+void Map::load( const std::vector<byte>& data_in ){
 	constexpr size_t MINIMUM_FILESIZE = 4 + 4;
 	if( data_in.size() < MINIMUM_FILESIZE ){
 		throw std::invalid_argument("Too small data given.");
@@ -141,6 +141,6 @@ void RF_Map::load( const std::vector<byte>& data_in ){
 	}
 }
 
-RF_Map::~RF_Map(){
+Map::~Map(){
 
 }

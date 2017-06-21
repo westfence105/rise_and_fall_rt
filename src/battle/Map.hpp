@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef rise_and_fall_RF_Map_h
-#define rise_and_fall_RF_Map_h
+#ifndef rise_and_fall_Map_h
+#define rise_and_fall_Map_h
 
 #include <stdexcept>
 #include <vector>
@@ -13,7 +13,7 @@
 typedef uint8_t byte;
 
 namespace rise_and_fall {
-	class RF_Map {
+	class Map {
 		uint32_t m_width;
 		uint32_t m_height;
 		std::vector<byte> m_data;
@@ -32,13 +32,13 @@ namespace rise_and_fall {
 		void load( const std::vector<byte>& data_in );
 
 	public:
-		RF_Map( const std::string& filename ) throw(std::invalid_argument);
-		RF_Map( const std::vector<byte>& data_in );
-		RF_Map( const RF_Map& );
-		~RF_Map();
+		Map( const std::string& filename ) throw(std::invalid_argument);
+		Map( const std::vector<byte>& data_in );
+		Map( const Map& );
+		~Map();
 
 	private:
-		RF_Map();
+		Map();
 	};
 }
 

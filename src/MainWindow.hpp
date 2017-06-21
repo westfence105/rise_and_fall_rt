@@ -12,13 +12,13 @@
 #include "Scene.hpp"
 
 namespace rise_and_fall {
-	class RF_MainWindow : public soundbag::SDL_GL_Window {
+	class MainWindow : public soundbag::SDL_GL_Window {
 		std::shared_ptr<Scene> m_scene;
 		std::recursive_mutex m_mutex;
 
 	public:
-		RF_MainWindow();
-		~RF_MainWindow();
+		MainWindow();
+		~MainWindow();
 
 		void setScene( std::shared_ptr<Scene> scene );
 

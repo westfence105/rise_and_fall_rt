@@ -5,7 +5,7 @@
 #include "SDL_ttf.h"
 
 #include "MainWindow.hpp"
-#include "RF_Config.hpp"
+#include "Config.hpp"
 
 using namespace rise_and_fall;
 
@@ -32,9 +32,9 @@ int main( int argc, char** argv ){
 
 	TTF_Init();
 
-	RF_Config::getInstance().init(argc,argv);
+	Config::getInstance().init(argc,argv);
 
-	auto window = std::make_shared<RF_MainWindow>();
+	auto window = std::make_shared<MainWindow>();
 
 	window->main();
 
