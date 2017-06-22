@@ -4,6 +4,7 @@ Class BattleScene {
 }
 
 BattleScene .> Map
+BattleScene ..> Unit
 
 Class Map {
   -data : List<byte>
@@ -12,4 +13,91 @@ Class Map {
   +operator() : byte(x,y)
   +genBuffers()
   +draw()
+}
+
+Class Unit {
+  +type  	   		: string
+  +name  	   		: string
+  +pos   	   		: Point
+  +face  	   		: float
+  +speed 	   		: float //current speed
+  ~max_speed   		: float //property calculated from module 'engine'
+  ~turn        		: float
+  ~turn_type   		: enum  //0=spin-turn 1=ship-turn 2=turning-radius
+  ~body		   		: Module
+  ~engine	   		: Engine
+  ~arms		   		: List<ArmamentGroup>
+  ~current_arm 		: uint //index of current ArmamentGroup
+  +getCurrentAim()	: Point //get current_arm's aim point
+  +nextArm()		: //move current_arm to next
+  +moveAim()  		: void(x,y) //move current_arm's aim
+  +pivotAim()		: void(distance,rotation)
+  +getReadyCount() 	: int
+  +draw()
+  +update()	  		: void(delta)
+  +hit()			: bool(Point,FlyingBullet)
+}
+
+Unit ..> "Module"
+
+Class "Module" {
+	+hp 		: int
+	~hp_max 	: int
+	+health()	: float //( hp / hp_max )
+	+armor		: int
+	+pos 		: Point
+	+width		: int
+	+height 	: int
+	+rotation	: float
+	+draw()
+  	+hit()		: bool(x,y,FlyingBullet)
+	-line_vbo	: GLuint[2] //vertex and index buffer
+	-fill_vbo	: GLuint[2] //vertex and index buffer
+}
+
+Module --> "Engine"
+Module --> "Armament"
+
+Class "Engine" {
+	+max_speed : float
+	+min_speed : float
+	+accel	   : float
+	+decel     : float
+}
+
+Class "Armament" {
+	+type   		: enum  //CANNON,TORPEDO
+	+bullets 		: List<Bullet>
+	+velocity		: int 	//bullet velocity
+	+range  		: int   //meter
+	+num			: int   //number of armaments
+	+load			: float //loading status
+	+load_time 		: float //loading time
+	+angle  		: float //degree
+	+rotate_min		: float
+	+rotate_max		: float
+	+rotate_speed	: float //rotation speed, degrees per second
+	+aimed			: Point
+	+aim			: Point
+	+update()		: void(delta)
+}
+
+Class ArmamentGroup {
+	+arms : List<Armament>
+	+aim  : Point
+	+update() : void(delta)
+	+getReadyCount() : int
+}
+
+Class Bullet {
+	+type : enum //AP,HE
+	+pen  : int  //milimeter
+	+dmg  : int  //hp
+}
+
+Class FlyingBullet {
+	+bullet : Bullet
+	+target : Point
+	+pos 	: Point //current position
+	+speed  : int   //bullet speed
 }
