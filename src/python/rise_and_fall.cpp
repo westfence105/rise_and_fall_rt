@@ -27,6 +27,7 @@ BOOST_PYTHON_MODULE(rise_and_fall){
 		;
 	bpy::class_<Unit::Module>("Module")
 			.def(bpy::init<const bpy::dict&>())
+			.def_readwrite("name",&Unit::Module::name)
 			.def_readwrite("hp",&Unit::Module::hp)
 			.def_readwrite("armor",&Unit::Module::armor)
 			.def_readwrite("pos",&Unit::Module::pos)

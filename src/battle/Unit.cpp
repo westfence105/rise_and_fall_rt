@@ -140,6 +140,7 @@ Unit::Module::Module( const bpy::dict& d ) : Module()
 
 Unit::Module::Module( const Module& m ) : Module()
 {
+	name = m.name;
 	hp = m.hp;
 	hp_max = m.hp_max;
 	armor = m.armor;

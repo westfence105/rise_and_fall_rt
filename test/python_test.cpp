@@ -35,9 +35,10 @@ TEST(python_test,unit){
 				"'length':132,"
 				"'angle':0 })" "\n"
 			, ns );
-		Unit::Module module = bpy::extract<Unit::Module>(ns["module"]);
-	//	EXPECT_EQ( module.name, "Body" );
+		Unit::Module& module = bpy::extract<Unit::Module&>(ns["module"]);
+		EXPECT_EQ( module.name, "Body" );
 		EXPECT_EQ( module.hp, 10000 );
+		EXPECT_EQ( module.hp_max, 10000 );
 		EXPECT_EQ( module.armor, 102 );
 		EXPECT_EQ( module.pos, coord_type( 0, 0 ) );
 		EXPECT_EQ( module.width, 23 );
@@ -52,7 +53,7 @@ TEST(python_test,unit){
 				"'accel': 10,"
 				"'decel':  2 })\n"
 			, ns );
-		Unit::Engine engine = bpy::extract<Unit::Engine>(ns["engine"]);
+		Unit::Engine& engine = bpy::extract<Unit::Engine&>(ns["engine"]);
 		EXPECT_EQ( engine.hp, 5000 );
 		EXPECT_EQ( engine.max_speed(), 30 );
 		EXPECT_EQ( engine.min_speed(), -5 );
@@ -75,7 +76,7 @@ TEST(python_test,unit){
 				"'rotate_min':-150,"
 				"'rotate_speed': 5 })\n"
 			, ns );
-		Unit::Armament arm = bpy::extract<Unit::Armament>( ns["arm"] );
+		Unit::Armament& arm = bpy::extract<Unit::Armament&>( ns["arm"] );
 		EXPECT_EQ( arm.type, Unit::Armament::ArmamentType::CANNON );
 		EXPECT_EQ( arm.bullet.type, Bullet::BulletType::AP );
 		EXPECT_EQ( arm.bullet.pen, 102 );
@@ -98,7 +99,7 @@ TEST(python_test,unit){
 			"a_grp = rise_and_fall.ArmamentGroup("
 				"'30.5cm Twin Main-Battery', [ arm, arm2 ])" "\n"
 			, ns );
-		Unit::ArmamentGroup a_grp = bpy::extract<Unit::ArmamentGroup>( ns["a_grp"] );
+		Unit::ArmamentGroup& a_grp = bpy::extract<Unit::ArmamentGroup&>( ns["a_grp"] );
 		EXPECT_EQ( a_grp.name, "30.5cm Twin Main-Battery" );
 		ASSERT_EQ( a_grp.arms.size(), 2 );
 		EXPECT_EQ( a_grp.arms[1].pos.x, -50 );
@@ -116,7 +117,7 @@ TEST(python_test,unit){
 				"'engine':engine,"
 				"'arms':[a_grp] })" "\n"
 			, ns );
-		Unit unit = bpy::extract<Unit>( ns["unit"] );
+		Unit& unit = bpy::extract<Unit&>( ns["unit"] );
 		EXPECT_EQ( unit.type, "Shikishima Class BattleShip" );
 		EXPECT_EQ( unit.name, "Mikasa" );
 		EXPECT_EQ( unit.pos.x, 334 );
@@ -135,6 +136,9 @@ TEST(python_test,unit){
 			, ns );
 		EXPECT_TRUE( bpy::extract<bool>( ns["unit_alive"] ) );
 		EXPECT_EQ( bpy::extract<size_t>( ns["arm_count"] ), 1 );
+
+		unit.pos.x = 330;
+		EXPECT_EQ( (coord_type)bpy::extract<coord_type>( ns["unit"].attr("pos") ), unit.pos );
 	}
 	catch(bpy::error_already_set& e){
 		PyErr_Print();
