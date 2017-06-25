@@ -3,6 +3,7 @@
 #include "gtest/gtest.h"
 
 #include "battle/Unit.hpp"
+#include "battle/Stage.hpp"
 
 using namespace soundbag;
 using namespace rise_and_fall;
@@ -139,6 +140,15 @@ TEST(python_test,unit){
 
 		unit.pos.x = 330;
 		EXPECT_EQ( (coord_type)bpy::extract<coord_type>( ns["unit"].attr("pos") ), unit.pos );
+	
+		Stage stage;
+		ns["stage"] = boost::ref(stage);
+		bpy::exec(
+				"stage.append_unit( unit )" "\n"
+				"unit_count = stage.unit_count" "\n"
+			, ns );
+		ASSERT_EQ( stage.getUnitCount(), 1 );
+		EXPECT_EQ( stage.getCurrentUnit().name, unit.name );
 	}
 	catch(bpy::error_already_set& e){
 		PyErr_Print();

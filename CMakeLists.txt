@@ -41,13 +41,14 @@ add_executable(rise_and_fall
 		src/Scene.cpp
 		src/Config.cpp
 		src/battle/Map.cpp
+		src/battle/draw.cpp
 	)
 add_dependencies(rise_and_fall libsoundbag)
 
 add_library(battle STATIC
 		src/battle/Unit.cpp
-		src/battle/Unit_draw.cpp
 		src/battle/Unit_logic.cpp
+		src/battle/Stage.cpp
 	)
 
 add_library(rise_and_fall_pyd SHARED src/python/rise_and_fall.cpp)

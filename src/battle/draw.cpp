@@ -1,9 +1,27 @@
 #include "GL/glew.h"
 
 #include "Unit.hpp"
+#include "Stage.hpp"
 
 using namespace soundbag;
 using namespace rise_and_fall;
+
+
+void Stage::genBuffers(){
+	for( auto& unit : units ){
+		unit.genBuffers();
+	}
+}
+
+void Unit::genBuffers(){
+	///Not implemented
+}
+
+void Stage::draw(){
+	for( auto& unit : units ){
+		unit.draw();
+	}
+}
 
 void Unit::draw(){
 	body.draw();

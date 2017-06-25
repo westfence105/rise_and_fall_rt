@@ -17,21 +17,23 @@ namespace rise_and_fall {
 
 	private:
 		std::vector<Unit> units;
+		size_t current_unit;
 
 	public:
-		Stage(){}
-		~Stage(){}
+		Stage();
+		~Stage();
 
 		void genBuffers();
 		void draw();
 		void update( uint32_t delta );
 
 		Unit& getCurrentUnit();
-		size_t getUnitCount();
+		size_t getUnitCount() const;
 		size_t getCurrentUnitIndex() const;
 
 		//For python
-		void setUnits( const boost::python::object& py_list );
+		void appendUnit( const boost::python::dict& d );
+		void appendUnit( const Unit& unit );
 		std::vector<Unit>::iterator units_begin();
 		std::vector<Unit>::iterator units_end();
 	};

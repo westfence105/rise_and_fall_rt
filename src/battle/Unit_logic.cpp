@@ -101,3 +101,11 @@ void Unit::ArmamentGroup::shot( Stage& stage, const coord_type& pos ){
 		}
 	}
 }
+
+void Unit::update( double delta ){
+	//Not implemented
+}
+
+void FlyingBullet::update( double delta ){
+	//Not implemented
+}

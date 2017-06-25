@@ -104,9 +104,12 @@ BOOST_PYTHON_MODULE(rise_and_fall){
 			.def("shot",&Unit::shot)
 			.def("accel",&Unit::accel)
 			.def("turn",&Unit::turn)
-			.def("arms.__iter__",bpy::range(
-									&Unit::arms_begin,
-									&Unit::arms_end
-								))
+		;
+	bpy::class_<Stage>("Stage")
+			.def("current_unit",&Stage::getCurrentUnit,bpy::return_value_policy<bpy::copy_non_const_reference>())
+			.add_property("current_unit_index",&Stage::getCurrentUnitIndex)
+			.def("append_unit",(void(Stage::*)(const bpy::dict&))&Stage::appendUnit)
+			.def("append_unit",(void(Stage::*)(const Unit&))&Stage::appendUnit)
+			.add_property("unit_count",&Stage::getUnitCount)
 		;
 }
