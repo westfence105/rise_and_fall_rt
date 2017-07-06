@@ -59,7 +59,6 @@ void Map::load( const std::vector<byte>& data_in ){
 	}
 	auto iter = data_in.begin();
 
-	bool compressed;
 	constexpr std::array<byte,4> MAGIC_NUMBER = { 3, 'r', 'f', 'M' };
 	if( ! std::equal( MAGIC_NUMBER.begin(), MAGIC_NUMBER.end(), iter ) ){
 		throw std::invalid_argument("Invalid data magick-number.");
