@@ -8,17 +8,21 @@
 #include "SDL.h"
 
 #include "soundbag/SDL_GL_Window.hpp"
+#include "soundbag/SBGL_Dialog.hpp"
 
 #include "Config.hpp"
 #include "Scene.hpp"
 
 namespace rise_and_fall {
 	class MainWindow : public soundbag::SDL_GL_Window {
-		std::shared_ptr<Scene> m_scene;
 		std::recursive_mutex m_mutex;
 
+		std::shared_ptr<Scene> m_scene;
+
+		std::unique_ptr<soundbag::SBGL_Dialog> m_quit_dialog;
+
 	public:
-		MainWindow();
+		MainWindow( const rise_and_fall::Config& conf );
 		~MainWindow();
 
 		void setScene( std::shared_ptr<Scene> scene );
