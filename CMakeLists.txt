@@ -77,7 +77,7 @@ install(TARGETS rise_and_fall
 			RUNTIME DESTINATION rise_and_fall
 			LIBRARY DESTINATION rise_and_fall/script
 	)
-install(FILES res//NotoSans-Regular.ttf DESTINATION rise_and_fall)
+install(FILES res/TakaoPGothic.ttf DESTINATION rise_and_fall)
 
 enable_testing()
 find_package(GTest REQUIRED)
