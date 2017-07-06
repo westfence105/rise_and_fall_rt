@@ -4,8 +4,10 @@ project(rise_and_fall_rt)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -DDEBUG")
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wno-long-long -pedantic")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror -Wno-error=unknown-pragmas -O0")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 
 find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
