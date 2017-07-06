@@ -17,16 +17,29 @@ extern "C" {
   #endif
 }
 
+#include "GL/glew.h"
+
 #include "boost/filesystem.hpp"
 
+#include "soundbag/SBGL_Dialog.hpp"
+
 #include "Config.hpp"
+
+using namespace std::string_literals;
 
 namespace bfs = boost::filesystem;
 
 using namespace soundbag;
 using namespace rise_and_fall;
 
-Config::Config() : SDL_GL_Window::Config( 800, 600 ){
+boost::filesystem::path Config::path;
+std::string Config::font;
+std::string Config::debug;
+
+Config::Config( int argc, char** argv )
+      throw( std::runtime_error, std::ios_base::failure )
+  : SDL_GL_Window::Config( 800, 600 )
+{
   uint32_t bufsize = MAX_PATH + 1;
   std::vector<char> buf(bufsize);
   #if defined(_WIN32) || defined(_WIN64)
@@ -48,7 +61,7 @@ Config::Config() : SDL_GL_Window::Config( 800, 600 ){
   #endif
   path = bfs::path(buf.data()).remove_filename();
 
-  font = path / "NotoSans-Regular.ttf";
+  font = (path / "TakaoPGothic.ttf").string();
 
 #ifndef NDEBUG
   std::cout << "buf:  " << buf.data() << std::endl;
@@ -56,18 +69,7 @@ Config::Config() : SDL_GL_Window::Config( 800, 600 ){
   std::cout << "conf: " << path / "rise_and_fall.conf" << std::endl;
   std::cout << "font: " << font << std::endl;
 #endif
-}
 
-Config::~Config(){
-
-}
-
-Config& Config::getInstance(){
-  static Config instance;
-  return instance;
-}
-
-void Config::init( int argc, char** argv ) {
   std::unordered_map<std::string,std::string> conf;
   try {
     bfs::ifstream conf_ifs( path / "rise_and_fall.conf" );
@@ -155,4 +157,24 @@ void Config::init( int argc, char** argv ) {
       height = std::stoi( height_str );
     } catch(...){}
   }
+
+  if( SDL_Init(SDL_INIT_EVERYTHING) != 0 ){
+    throw std::runtime_error("Failed to initialize SDL. "s + SDL_GetError() );
+  }
+
+  TTF_Init();
+
+  SBGL_Dialog::msg_font = TTF_OpenFont( font.c_str(), 24 );
+  SBGL_Dialog::button_font = TTF_OpenFont( font.c_str(), 22 );
+  if( SBGL_Dialog::msg_font == NULL || SBGL_Dialog::button_font == NULL ){
+    throw std::ios_base::failure("Failed to load font \""s + font + "\".");
+  }
+}
+
+Config::~Config(){
+  TTF_CloseFont( SBGL_Dialog::msg_font );
+  TTF_CloseFont( SBGL_Dialog::button_font );
+
+  TTF_Quit();
+  SDL_Quit();
 }

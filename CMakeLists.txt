@@ -2,12 +2,13 @@ cmake_minimum_required(VERSION 3.0)
 
 project(rise_and_fall_rt)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wno-long-long -pedantic")
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror -Wno-error=unknown-pragmas -O0")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
+endif()
 
 find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -65,7 +66,7 @@ target_link_libraries( rise_and_fall_pyd PRIVATE
 
 target_link_libraries( rise_and_fall PUBLIC
 		battle rise_and_fall_pyd
-		SDL_GL_Window ${SDL2_LIBRARIES} SDL2_ttf
+		SBGL SDL_GL_Window ${SDL2_LIBRARIES} SDL2_ttf
 		${GLEW_LIBRARIES} ${OPENGL_LIBRARIES}
 		${Boost_PYTHON_LIBRARIES} ${PYTHON_LIBRARIES}
 		${Boost_FILESYSTEM_LIBRARIES} ${Boost_SYSTEM_LIBRARIES}

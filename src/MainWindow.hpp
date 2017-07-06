@@ -9,6 +9,7 @@
 
 #include "soundbag/SDL_GL_Window.hpp"
 
+#include "Config.hpp"
 #include "Scene.hpp"
 
 namespace rise_and_fall {
@@ -23,9 +24,10 @@ namespace rise_and_fall {
 		void setScene( std::shared_ptr<Scene> scene );
 
 	protected:
-		void draw();
-		void update( uint32_t delta );
-		bool handleEvent( SDL_Event& event );
+		void prepare() override;
+		void draw() override;
+		void update( uint32_t delta ) override;
+		bool handleEvent( const SDL_Event& event ) override;
 
 	};
 }

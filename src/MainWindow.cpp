@@ -11,6 +11,7 @@ using namespace soundbag;
 using namespace rise_and_fall;
 
 MainWindow::MainWindow() : SDL_GL_Window( "The Rise and Fall", rise_and_fall::Config::getInstance() )
+MainWindow::MainWindow( const rise_and_fall::Config& conf ) : SDL_GL_Window( "The Rise and Fall", conf )
 {
 
 }
@@ -44,6 +45,7 @@ void MainWindow::update( uint32_t delta ){
 }
 
 bool MainWindow::handleEvent( SDL_Event& event ){
+bool MainWindow::handleEvent( const SDL_Event& event ){
 	soundbag::try_lock<std::recursive_mutex> locker(m_mutex);
 	return ( locker && m_scene && m_scene->handleEvent(event) );
 }

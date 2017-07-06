@@ -1,11 +1,14 @@
 #include <fstream>
 #include <memory>
 
+#include "GL/glew.h"
 #include "SDL.h"
 #include "SDL_ttf.h"
 
 #include "MainWindow.hpp"
 #include "Config.hpp"
+
+using namespace std::string_literals;
 
 using namespace rise_and_fall;
 
@@ -25,21 +28,24 @@ int main( int argc, char** argv ){
 		std::cerr.rdbuf( ofs_err.rdbuf() );
 	#endif
 
-	if( SDL_Init(SDL_INIT_EVERYTHING) != 0 ){
-		std::cerr << "Fatal Error: Failed to Initialize SDL. " << SDL_GetError() << std::endl;
+	try{
+		Config conf( argc, argv );
+
+		auto window = std::make_shared<MainWindow>( conf );
+
+		auto err = glewInit();
+		if( err != GLEW_OK ){
+			throw std::runtime_error( "Failed to initializing GLEW. "s +
+										std::string((const char*)glewGetErrorString(err))
+								);
+		}
+
+		window->main();
+	}
+	catch( const std::exception &e ){
+		std::cerr << "Fatal Error: " << e.what() << std::endl;
 		return 1;
 	}
-
-	TTF_Init();
-
-	Config::getInstance().init(argc,argv);
-
-	auto window = std::make_shared<MainWindow>();
-
-	window->main();
-
-	TTF_Quit();
-	SDL_Quit();
 
 	#ifdef STDOUT_REDIRECT
 		std::cout.rdbuf( ob_orig );
