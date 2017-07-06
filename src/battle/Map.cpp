@@ -60,15 +60,8 @@ void Map::load( const std::vector<byte>& data_in ){
 	auto iter = data_in.begin();
 
 	bool compressed;
-	constexpr std::array<byte,4> MAGIC_NUMBER_CM = { 3, 'r', 'f', 'm' }; //Compressed
-	constexpr std::array<byte,4> MAGIC_NUMBER_NC = { 3, 'r', 'f', 'M' }; //Not compressed
-	if( std::equal( iter, iter + 4, MAGIC_NUMBER_CM.begin() ) ){
-		compressed = true;
-	}
-	else if( std::equal( iter, iter + 4, MAGIC_NUMBER_NC.begin() ) ){
-		compressed = false;
-	}
-	else {
+	constexpr std::array<byte,4> MAGIC_NUMBER = { 3, 'r', 'f', 'M' };
+	if( ! std::equal( MAGIC_NUMBER.begin(), MAGIC_NUMBER.end(), iter ) ){
 		throw std::invalid_argument("Invalid data magick-number.");
 	}
 	iter += 4;
@@ -82,7 +75,7 @@ void Map::load( const std::vector<byte>& data_in ){
 		const byte type = *(iter++);
 		const byte format = *(iter++);
 		const uint32_t data_size = decodeBytes<uint32_t>( iter, false );
-		if( data_size < data_in.end() - iter ){
+		if( (intptr_t)data_size < (intptr_t)( data_in.end() - iter ) ){
 			throw std::invalid_argument("Invalid chunk size");
 		}
 		if( type == 'd' && data_init == false ){
@@ -127,8 +120,8 @@ void Map::load( const std::vector<byte>& data_in ){
 			{ 0x80, 0x80, 0x80 }
 		};
 		m_image.reserve( m_width * m_height * 3 );
-		for( int j = 0; j < m_height; ++j ){
-			for( int i = 0; i < m_width; ++i ){
+		for( uint16_t j = 0; j < m_height; ++j ){
+			for( uint16_t i = 0; i < m_width; ++i ){
 				const byte b = m_data[i+(m_height-j-1)*m_width];
 				if( b < colors.size() ){
 					std::copy( colors[b].cbegin(), colors[b].cend(), std::back_inserter(m_image) );
